@@ -112,7 +112,19 @@
             "method": "GET",
             "url": {
               "raw": "{{server}}/api/?service=list_all_hardware&assetid={{assetid}}",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "service",
+                  "value": "list_all_hardware"
+                },
                 {
                   "key": "assetid",
                   "value": "{{assetid}}",
