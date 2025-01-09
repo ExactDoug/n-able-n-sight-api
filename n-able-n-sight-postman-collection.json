@@ -146,7 +146,19 @@
             "method": "GET",
             "url": {
               "raw": "{{server}}/api/?service=list_device_monitoring_details&deviceid={{deviceid}}",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "service",
+                  "value": "list_device_monitoring_details"
+                },
                 {
                   "key": "deviceid",
                   "value": "{{deviceid}}",
