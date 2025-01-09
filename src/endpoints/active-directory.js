@@ -3,28 +3,45 @@ class ActiveDirectoryEndpoints {
     this.apiClient = apiClient;
   }
 
-  async listUsers(siteId) {
+  async listUsers(siteId, options = {}) {
     this.apiClient.validateParameters({ siteId }, ['siteId']);
-    return this.apiClient.makeRequest('list_active_directory_users', {
-      siteid: siteId
-    });
-  }
-
-  async getUserDetails(siteId, userId) {
-    this.apiClient.validateParameters(
-      { siteId, userId },
-      ['siteId', 'userId']
-    );
-    return this.apiClient.makeRequest('get_ad_user_details', {
+    return this.apiClient.makeRequest('list_ad_users', {
       siteid: siteId,
-      userid: userId
+      ...options
     });
   }
 
-  async listGroups(siteId) {
-    this.apiClient.validateParameters({ siteId }, ['siteId']);
-    return this.apiClient.makeRequest('list_ad_groups', {
-      siteid: siteId
+  async getUser(siteId, objectGUID, options = {}) {
+    this.apiClient.validateParameters(
+      { siteId, objectGUID },
+      ['siteId', 'objectGUID']
+    );
+    return this.apiClient.makeRequest('get_ad_user', {
+      siteid: siteId,
+      objectGUID,
+      ...options
+    });
+  }
+
+  async searchUsers(siteId, query, options = {}) {
+    this.apiClient.validateParameters(
+      { siteId, query },
+      ['siteId', 'query']
+    );
+    return this.apiClient.makeRequest('search_ad_users', {
+      siteid: siteId,
+      query,
+      ...options
+    });
+  }
+
+  async getUserHistory(objectGUID) {
+    this.apiClient.validateParameters(
+      { objectGUID },
+      ['objectGUID']
+    );
+    return this.apiClient.makeRequest('get_ad_user_history', {
+      objectGUID
     });
   }
 

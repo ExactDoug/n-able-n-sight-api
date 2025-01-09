@@ -20,7 +20,7 @@ class BackupEndpoints {
   async getSelectionSize(params) {
     const required = ['clientid', 'siteid', 'deviceid', 'year', 'month'];
     this.apiClient.validateParameters(params, required);
-    
+
     return this.apiClient.makeRequest('mob/mob_list_selection_size', {
       clientid: params.clientid,
       siteid: params.siteid,

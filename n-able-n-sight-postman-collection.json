@@ -1,28 +1,19 @@
 {
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.request.url.query.add({key: 'apikey', value: pm.variables.get('apikey')});"
+        ]
+      }
+    }
+  ],
   "info": {
     "name": "N-able N-sight RMM API",
-    "description": "Complete collection for the N-able N-sight RMM Data Extraction API. Includes endpoints for Client/Site Management, Asset Tracking, Monitoring, Antivirus, Backup & Recovery, Patch Management, Task Management, and Active Directory.\n\nServer Configuration:\n- Set your N-able N-sight server hostname in the collection variables\n- Only provide the hostname (e.g., your-regional-systemmonitor-server.com)\n- Do not include protocol (https://) or trailing slash\n- To find your server hostname, log into N-sight RMM and copy just the hostname from the browser address bar\n\nAuthorization:\n- This API uses API Key authentication\n- Generate your API key from N-sight RMM: Settings > General Settings > API\n- The API key is associated with the Agent Key user permissions and assigned Client Groups\n- Set your API key in the collection variables or authorization settings",
+    "description": "Complete collection for the N-able N-sight RMM Data Extraction API. Includes endpoints for Client/Site Management, Asset Tracking, Monitoring, Antivirus, Backup & Recovery, Patch Management, Task Management, and Active Directory.\n\nServer Configuration:\n- Set your N-able N-sight server hostname in the collection variables\n- Only provide the hostname (e.g., your-regional-systemmonitor-server.com)\n- Do not include protocol (https://) or trailing slash\n- To find your server hostname, log into N-sight RMM and copy just the hostname from the browser address bar\n\nAuthorization:\n- This API uses API Key authentication via URL parameter (apikey=)\n- Generate your API key from N-sight RMM: Settings > General Settings > API\n- The API key is associated with the Agent Key user permissions and assigned Client Groups\n- Set your API key in the collection variables - it will be included in all request URLs",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "auth": {
-    "type": "apikey",
-    "apikey": [
-      {
-        "key": "value",
-        "value": "{{apikey}}",
-        "type": "string"
-      },
-      {
-        "key": "key",
-        "value": "apikey",
-        "type": "string"
-      },
-      {
-        "key": "in",
-        "value": "query",
-        "type": "string"
-      }
-    ]
   },
   "variable": [
     {
@@ -47,7 +38,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?service=list_clients",
+              "raw": "{{server}}/api/",
               "protocol": "https",
               "host": [
                 "{{server}}"
@@ -57,6 +48,10 @@
                 ""
               ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
                 {
                   "key": "service",
                   "value": "list_clients"
@@ -73,11 +68,11 @@
           }
         },
         {
-          "name": "List Sites",
+          "name": "List Devices at Client",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?service=list_sites&clientid={{clientid}}",
+              "raw": "{{server}}/api/",
               "protocol": "https",
               "host": [
                 "{{server}}"
@@ -88,6 +83,54 @@
               ],
               "query": [
                 {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "list_devices_at_client"
+                },
+                {
+                  "key": "clientid",
+                  "value": "{{clientid}}",
+                  "description": "Required: Client ID to list devices for"
+                },
+                {
+                  "key": "devicetype",
+                  "value": "server",
+                  "description": "Required: Device type (server/workstation/mobile_device). Default: server"
+                },
+                {
+                  "key": "describe",
+                  "value": "true",
+                  "description": "Optional: Returns a description of the service",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Lists all devices for the specified client. Can be filtered by device type. Response includes capability flags that indicate available services:\n- patch: Patch management capability (0=disabled, 1=enabled)\n- mav: Managed antivirus capability\n- mob: Mobile device management\n- systray: System tray integration\n- mavbreck: Legacy antivirus capability\n\nCheck these flags before using related endpoints."
+          }
+        },
+        {
+          "name": "List Sites",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
                   "key": "service",
                   "value": "list_sites"
                 },
@@ -95,6 +138,12 @@
                   "key": "clientid",
                   "value": "{{clientid}}",
                   "description": "Required: Client ID to list sites for"
+                },
+                {
+                  "key": "describe",
+                  "value": "true",
+                  "description": "Optional: Returns a description of the service",
+                  "disabled": true
                 }
               ]
             },
@@ -111,7 +160,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?service=list_all_hardware&assetid={{assetid}}",
+              "raw": "{{server}}/api/",
               "protocol": "https",
               "host": [
                 "{{server}}"
@@ -122,6 +171,10 @@
               ],
               "query": [
                 {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
                   "key": "service",
                   "value": "list_all_hardware"
                 },
@@ -129,6 +182,12 @@
                   "key": "assetid",
                   "value": "{{assetid}}",
                   "description": "Required: Asset ID to list hardware for"
+                },
+                {
+                  "key": "describe",
+                  "value": "true",
+                  "description": "Optional: Returns a description of the service",
+                  "disabled": true
                 }
               ]
             },
@@ -145,7 +204,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?service=list_device_monitoring_details&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/",
               "protocol": "https",
               "host": [
                 "{{server}}"
@@ -156,6 +215,10 @@
               ],
               "query": [
                 {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
                   "key": "service",
                   "value": "list_device_monitoring_details"
                 },
@@ -163,6 +226,12 @@
                   "key": "deviceid",
                   "value": "{{deviceid}}",
                   "description": "Required: Device ID to get monitoring details for"
+                },
+                {
+                  "key": "describe",
+                  "value": "true",
+                  "description": "Optional: Returns a description of the service",
+                  "disabled": true
                 }
               ]
             },
@@ -179,7 +248,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?service=list_mav_scans&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/",
               "protocol": "https",
               "host": [
                 "{{server}}"
@@ -189,6 +258,10 @@
                 ""
               ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
                 {
                   "key": "service",
                   "value": "list_mav_scans"
@@ -209,6 +282,12 @@
                   "value": "",
                   "description": "Optional: Specific engine version to filter by",
                   "disabled": true
+                },
+                {
+                  "key": "describe",
+                  "value": "true",
+                  "description": "Optional: Returns a description of the service",
+                  "disabled": true
                 }
               ]
             },
@@ -220,16 +299,38 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?service=list_mav_threats&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "list_mav_threats"
+                },
                 {
                   "key": "deviceid",
                   "value": "{{deviceid}}",
                   "description": "Required: Device ID to list threats for"
+                },
+                {
+                  "key": "describe",
+                  "value": "true",
+                  "description": "Optional: Returns a description of the service",
+                  "disabled": true
                 }
               ]
             },
-            "description": "Lists managed antivirus threats for the specified device"
+            "description": "Lists managed antivirus threats for the specified device. Returns threat details including name, severity, status, and detection time."
           }
         },
         {
@@ -237,8 +338,24 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?service=list_mav_quarantine&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "list_mav_quarantine"
+                },
                 {
                   "key": "deviceid",
                   "value": "{{deviceid}}",
@@ -249,10 +366,16 @@
                   "value": "ALL",
                   "description": "Optional: Filter quarantine items (CURRENT/PREVIOUS/ALL)",
                   "disabled": true
+                },
+                {
+                  "key": "describe",
+                  "value": "true",
+                  "description": "Optional: Returns a description of the service",
+                  "disabled": true
                 }
               ]
             },
-            "description": "Lists quarantined items for the specified device"
+            "description": "Lists quarantined items for the specified device. Returns details about items in quarantine including file name, path, threat name, and quarantine date."
           }
         },
         {
@@ -260,8 +383,24 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?service=start_mav_scan&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "start_mav_scan"
+                },
                 {
                   "key": "deviceid",
                   "value": "{{deviceid}}",
@@ -277,8 +416,24 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?service=pause_mav_scan&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "pause_mav_scan"
+                },
                 {
                   "key": "deviceid",
                   "value": "{{deviceid}}",
@@ -294,8 +449,24 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?service=resume_mav_scan&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "resume_mav_scan"
+                },
                 {
                   "key": "deviceid",
                   "value": "{{deviceid}}",
@@ -311,8 +482,24 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?service=cancel_mav_scan&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "cancel_mav_scan"
+                },
                 {
                   "key": "deviceid",
                   "value": "{{deviceid}}",
@@ -328,8 +515,24 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?service=release_from_quarantine",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "release_from_quarantine"
+                },
                 {
                   "key": "deviceid",
                   "value": "{{deviceid}}",
@@ -354,8 +557,24 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?service=delete_from_quarantine",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "delete_from_quarantine"
+                },
                 {
                   "key": "deviceid",
                   "value": "{{deviceid}}",
@@ -385,8 +604,24 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?service=list_backup_sessions&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "list_mob_sessions"
+                },
                 {
                   "key": "deviceid",
                   "value": "{{deviceid}}",
@@ -400,7 +635,7 @@
                 }
               ]
             },
-            "description": "Lists backup sessions for the specified device"
+            "description": "Lists backup sessions for the specified device. Shows both FILE_SYSTEM and SYSTEM_STATE backup history."
           }
         },
         {
@@ -408,8 +643,26 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?service=get_backup_selection_size&deviceid={{deviceid}}&month={{month}}&year={{year}}",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}",
+                  "description": "Required: API key for authentication"
+                },
+                {
+                  "key": "service",
+                  "value": "mob/mob_list_selection_size",
+                  "description": "Required: Service name"
+                },
                 {
                   "key": "deviceid",
                   "value": "{{deviceid}}",
@@ -424,16 +677,10 @@
                   "key": "year",
                   "value": "{{year}}",
                   "description": "Required: Year to get size for (YYYY)"
-                },
-                {
-                  "key": "describe",
-                  "value": "true",
-                  "description": "Optional: Set to true for additional details",
-                  "disabled": true
                 }
               ]
             },
-            "description": "Gets backup selection size for specified device and time period"
+            "description": "Gets backup selection size for specified device and time period. Returns total size and breakdown by backup type (FILE_SYSTEM and SYSTEM_STATE)."
           }
         }
       ]
@@ -446,8 +693,24 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?service=list_patches&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "list_patches"
+                },
                 {
                   "key": "deviceid",
                   "value": "{{deviceid}}",
@@ -456,12 +719,12 @@
                 {
                   "key": "describe",
                   "value": "true",
-                  "description": "Optional: Set to true for detailed patch information",
+                  "description": "Optional: Returns a description of the service and detailed patch information",
                   "disabled": true
                 }
               ]
             },
-            "description": "Lists patches for the specified device"
+            "description": "Lists patches for the specified device. Returns details about available patches including KB number, severity, status, and installation state."
           }
         },
         {
@@ -469,8 +732,24 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?service=approve_patches",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "approve_patches"
+                },
                 {
                   "key": "deviceid",
                   "value": "{{deviceid}}",
@@ -495,8 +774,24 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?service=ignore_patches",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "ignore_patches"
+                },
                 {
                   "key": "deviceid",
                   "value": "{{deviceid}}",
@@ -521,8 +816,24 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?service=do_nothing_patches",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "do_nothing_patches"
+                },
                 {
                   "key": "deviceid",
                   "value": "{{deviceid}}",
@@ -547,8 +858,24 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?service=reprocess_patches",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "reprocess_patches"
+                },
                 {
                   "key": "deviceid",
                   "value": "{{deviceid}}",
@@ -579,8 +906,24 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?service=retry_patches",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "retry_patches"
+                },
                 {
                   "key": "deviceid",
                   "value": "{{deviceid}}",
@@ -616,8 +959,24 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?service=list_tasks&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "list_tasks"
+                },
                 {
                   "key": "deviceid",
                   "value": "{{deviceid}}",
@@ -651,8 +1010,24 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?service=run_task_now",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "run_task_now"
+                },
                 {
                   "key": "checkid",
                   "value": "{{checkid}}",
@@ -674,8 +1049,24 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?service=get_task_result&checkid={{checkid}}",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "get_task_result"
+                },
                 {
                   "key": "checkid",
                   "value": "{{checkid}}",
@@ -696,8 +1087,24 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?service=list_ad_users&siteid={{siteid}}",
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "list_active_directory_users"
+                },
                 {
                   "key": "siteid",
                   "value": "{{siteid}}",
@@ -713,79 +1120,6 @@
             },
             "description": "Lists Active Directory users for the specified site"
           }
-        },
-        {
-          "name": "Get AD User",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{server}}/api/?service=get_ad_user&siteid={{siteid}}&objectGUID={{objectGUID}}",
-              "query": [
-                {
-                  "key": "siteid",
-                  "value": "{{siteid}}",
-                  "description": "Required: Site ID to get user from"
-                },
-                {
-                  "key": "objectGUID",
-                  "value": "{{objectGUID}}",
-                  "description": "Required: Object GUID of user"
-                },
-                {
-                  "key": "describe",
-                  "value": "true",
-                  "description": "Optional: Set to true for detailed user information",
-                  "disabled": true
-                }
-              ]
-            },
-            "description": "Gets details for specified Active Directory user"
-          }
-        },
-        {
-          "name": "Search AD Users",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{server}}/api/?service=search_ad_users&siteid={{siteid}}&query={{query}}",
-              "query": [
-                {
-                  "key": "siteid",
-                  "value": "{{siteid}}",
-                  "description": "Required: Site ID to search in"
-                },
-                {
-                  "key": "query",
-                  "value": "{{query}}",
-                  "description": "Required: Search query string"
-                },
-                {
-                  "key": "describe",
-                  "value": "true",
-                  "description": "Optional: Set to true for detailed results",
-                  "disabled": true
-                }
-              ]
-            },
-            "description": "Searches for Active Directory users matching query"
-          }
-        },
-        {
-          "name": "Get User Change History",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{server}}/api/?service=get_ad_user_history&objectGUID={{objectGUID}}",
-              "query": [
-                {
-                  "key": "objectGUID",
-                  "value": "{{objectGUID}}",
-                  "description": "Required: Object GUID of user"
-                }
-              ]
-            },
-            "description": "Gets change history for specified Active Directory user"
-          }
         }
       ]
     }
@@ -796,6 +1130,12 @@
       "script": {
         "type": "text/javascript",
         "exec": [
+          "// Add apikey parameter",
+          "pm.request.addQueryParams({",
+          "    key: 'apikey',",
+          "    value: pm.variables.get('apikey')",
+          "});",
+          "",
           "// Enforce rate limiting",
           "let lastRequest = pm.variables.get('lastRequest');",
           "let now = Date.now();",

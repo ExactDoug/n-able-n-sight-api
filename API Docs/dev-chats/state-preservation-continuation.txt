@@ -1,0 +1,72 @@
+CONT_PROMPT|v1.1|N-ABLE_API|{
+"env":{
+"cwd":"c:/dev/claude-mcp-read-write/N-Able N-Sight Data Extraction API",
+"api":{"server":"www.systemmonitor.us","key":"f2b7a9fd54ceef858e93e5e8e698c401"},
+"test_device":{"id":"4893951","name":"HTF-AIO-ROBIN","site":"597141","mob":"1"}
+},
+"state":{
+"auth_changes":{"collection_level":true,"removed_url_dupes":true,"patterns_updated":true},
+"endpoints":{
+"verified":["list_mob_sessions","mob/mob_list_selection_size","list_active_directory_users"],
+"modified":["list_mob_sessions","mob/mob_list_selection_size","list_active_directory_users"],
+"tested":{
+"list_active_directory_users":{
+"response_format":"XML",
+"auth_verified":true,
+"error_handling_verified":true,
+"error_codes":{"3":"Login failed"},
+"content_type":"application/xml",
+"empty_response":{"status":"OK","count":0}
+}
+}
+},
+"working_curl":"curl -v \"https://www.systemmonitor.us/api/?apikey=f2b7a9fd54ceef858e93e5e8e698c401&service=mob/mob_list_selection_size&deviceid=4893951&month=1&year=2025\"",
+"postman":{
+"server":"C:/Users/dmortensen/Documents/Cline/MCP/postman-server/index.js",
+"collections":"C:/Users/dmortensen/Documents/Cline/MCP/postman-server/test/collections",
+"collection_name":"N-able N-sight RMM API",
+"verified_requests":["List AD Users"],
+"debug":{"postman*":true,"axios*":true,"http*":true,"request*":true,"newman*":true},
+"node_debug":["http","net","stream","https","tls","request"]
+}
+},
+"knowledge_graph":{
+"entities":[{
+"name":"N-Able API",
+"type":"API",
+"observations":[
+"Base URL: www.systemmonitor.us",
+"API Key authentication required",
+"Test device ID: 4893951 (HTF-AIO-ROBIN)",
+"Verified endpoints: list_mob_sessions, mob/mob_list_selection_size, list_active_directory_users",
+"Working with Postman collections for testing",
+"list_active_directory_users endpoint verified - returns XML format",
+"Authentication flow working correctly with API key",
+"Empty results properly handled with count=0 in XML response",
+"Response includes standard metadata: timestamp, host, status",
+"Error handling verified - returns proper XML error format",
+"Invalid authentication returns error code 3 with 'Login failed' message",
+"Error responses maintain consistent XML structure with status=FAIL",
+"Authentication errors properly detected and reported"
+]
+},{
+"name":"Test Environment",
+"type":"Configuration",
+"observations":[
+"API Key: f2b7a9fd54ceef858e93e5e8e698c401",
+"Test Device: HTF-AIO-ROBIN (ID: 4893951)",
+"Site: 597141",
+"MOB: 1"
+]}],
+"relations":[{
+"from":"N-Able API",
+"to":"Test Environment",
+"type":"uses"
+}]
+},
+"next":{
+"test_params":{"deviceid":"4893951","month":"1","year":"2025"},
+"verify":["response_format","error_handling","auth_flow"],
+"pending_endpoints":[]
+}
+}
