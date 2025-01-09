@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "N-able N-sight RMM API",
-    "description": "Complete collection for the N-able N-sight RMM Data Extraction API. Includes endpoints for Client/Site Management, Asset Tracking, Monitoring, Antivirus, Backup & Recovery, Patch Management, Task Management, and Active Directory.\n\nAuthorization:\n- This API uses API Key authentication\n- Generate your API key from N-sight RMM: Settings > General Settings > API\n- The API key is associated with the Agent Key user permissions and assigned Client Groups\n- Set your API key in the collection variables or authorization settings",
+    "description": "Complete collection for the N-able N-sight RMM Data Extraction API. Includes endpoints for Client/Site Management, Asset Tracking, Monitoring, Antivirus, Backup & Recovery, Patch Management, Task Management, and Active Directory.\n\nServer Configuration:\n- Set your N-able N-sight server URL in the collection variables\n- Example: https://your-regional-systemmonitor-server.com (without trailing slash)\n- To find your server URL, log into N-sight RMM and check the browser address bar\n\nAuthorization:\n- This API uses API Key authentication\n- Generate your API key from N-sight RMM: Settings > General Settings > API\n- The API key is associated with the Agent Key user permissions and assigned Client Groups\n- Set your API key in the collection variables or authorization settings",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -29,7 +29,7 @@
       "key": "server",
       "value": "{{server}}",
       "type": "string",
-      "description": "Your N-able N-sight server URL (e.g., https://your-regional-systemmonitor-server.com)"
+      "description": "Your N-able N-sight server URL without trailing slash (e.g., https://your-regional-systemmonitor-server.com)"
     },
     {
       "key": "apikey",
@@ -48,7 +48,19 @@
             "method": "GET",
             "url": {
               "raw": "{{server}}/api/?service=list_clients",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
               "query": [
+                {
+                  "key": "service",
+                  "value": "list_clients"
+                },
                 {
                   "key": "devicetype",
                   "value": "server",
