@@ -1,0 +1,13 @@
+# Asset Tracking Information
+
+The following Asset Tracking information is available through the API:
+
+| API Call | Service name | Description |
+|----------|--------------|-------------|
+| Listing Hardware | list_all_hardware | Lists hardware for given asset |
+| Listing Software | list_all_software | Lists software broken down by type for given asset |
+| Listing License Groups | list_license_groups | Lists all software license groups for account |
+| Listing License Group Items | list_license_group_items | Lists software in a software license group |
+| Listing Client License Count | list_client_license_count | Lists all client license counts |
+| Listing Licensed Software | list_licensed_software | Lists licensed software for given asset |
+| Listing Device Asset Details | list_device_asset_details | Lists device asset details identified by deviceid |

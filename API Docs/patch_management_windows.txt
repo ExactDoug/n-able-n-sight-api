@@ -1,0 +1,12 @@
+# Patch Management for Windows
+
+The following Patch Management for Windows information and actions are available via the API:
+
+| API Call | Service name | Description |
+|----------|--------------|-------------|
+| List all Patches for device | patch_list_all | Lists all software patches for the specified device |
+| Approve Patch | patch_approve | Approve software patches for the specified device |
+| Do nothing with Patch | patch_do_nothing | Set software patches 'do nothing' for the specified device |
+| Ignore Patch | patch_ignore | Set software patches to 'ignore' for the specified device |
+| Reprocess Patch | patch_reprocess | Reprocess software patches for the specified device |
+| Retry Patch | patch_retry | Retry software patches for the specified device |

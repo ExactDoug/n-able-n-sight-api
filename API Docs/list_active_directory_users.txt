@@ -1,0 +1,19 @@
+# List Active Directory Users
+
+Service name: list_active_directory_users
+
+URL Format: https://SERVER/api/?apikey=yourAPIkey&service=list_active_directory_users&siteid=SITEID
+
+Description: Lists Active Directory user details for the specified site
+
+Parameters:
+| Parameter | Description | Type | Required | Options | Default |
+|-----------|-------------|------|----------|----------|---------|
+| describe | Optional. Returns description of service. | boolean | no | true | 0 |
+| siteid | The identifier for the target site | integer | yes | 0 | 0 |
+
+Fields Description:
+- user@objectGUID: string (hex) - LDAP property used as unique identifier
+- user@status: integer - Status ID (0=unchanged, 1=change unknown, 2=modified, 3=new, 4=deleted, 5=restored)
+- user@device: integer - Identifier of the device where user was found
+- user/<any>: Contains any populated user field selected as Available Field for AD Users Query

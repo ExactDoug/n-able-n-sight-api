@@ -1,0 +1,10 @@
+# Antivirus Update Check Information
+
+The following Antivirus Update Check information is available via the API:
+
+| API Call | Service name | Description |
+|----------|--------------|-------------|
+| List Supported Antivirus Products | list_supported_av_products | Lists displayed name and id for all supported antivirus products |
+| List Antivirus Definitions | list_av_definitions | Lists 20 most recent definition versions and date released for a given antivirus product |
+| Get Antivirus Definition Release Date | get_av_definition_release_date | Given an antivirus product ID and a definition version, returns the date and time a definition was released. |
+| List Antivirus Update Check History | list_av_history | List status of Antivirus Update Checks on device for last 60 days. |

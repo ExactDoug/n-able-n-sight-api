@@ -1,0 +1,33 @@
+{
+    "name": "n-able-n-sight-api",
+    "version": "1.0.0",
+    "description": "N-able N-sight RMM API Development Kit - Postman collection, TypeScript definitions, and documentation",
+    "main": "src/types/index.ts",
+    "types": "src/types/index.ts",
+    "files": [
+        "src/types",
+        "n-able-n-sight-postman-collection.json",
+        "API Docs"
+    ],
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "n-able",
+        "n-sight",
+        "rmm",
+        "api",
+        "postman",
+        "typescript"
+    ],
+    "author": "",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ExactDoug/n-able-n-sight-api.git"
+    },
+    "bugs": {
+        "url": "https://github.com/ExactDoug/n-able-n-sight-api/issues"
+    },
+    "homepage": "https://github.com/ExactDoug/n-able-n-sight-api#readme"
+}

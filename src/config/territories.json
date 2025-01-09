@@ -1,0 +1,48 @@
+{
+  "territories": {
+    "americas": {
+      "name": "Americas",
+      "url": "https://www.am.remote.management"
+    },
+    "asia": {
+      "name": "Asia",
+      "url": "https://wwwasia.system-monitor.com"
+    },
+    "australia": {
+      "name": "Australia", 
+      "url": "https://www.system-monitor.com"
+    },
+    "europe": {
+      "name": "Europe",
+      "url": "https://wwweurope1.systemmonitor.eu.com"
+    },
+    "france": {
+      "name": "France (FR)",
+      "url": "https://wwwfrance.systemmonitor.eu.com"
+    },
+    "france1": {
+      "name": "France1",
+      "url": "https://wwwfrance1.systemmonitor.eu.com"
+    },
+    "germany": {
+      "name": "Germany",
+      "url": "https://wwwgermany1.systemmonitor.eu.com"
+    },
+    "ireland": {
+      "name": "Ireland",
+      "url": "https://wwwireland.systemmonitor.eu.com"
+    },
+    "poland": {
+      "name": "Poland",
+      "url": "https://wwwpoland1.systemmonitor.eu.com"
+    },
+    "uk": {
+      "name": "United Kingdom",
+      "url": "https://www.systemmonitor.co.uk"
+    },
+    "us": {
+      "name": "United States",
+      "url": "https://www.systemmonitor.us"
+    }
+  }
+}

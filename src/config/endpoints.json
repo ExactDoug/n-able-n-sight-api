@@ -1,0 +1,75 @@
+{
+  "categories": {
+    "clientSiteManagement": {
+      "name": "Client & Site Management",
+      "endpoints": {
+        "listClients": {
+          "serviceName": "list_clients",
+          "method": "GET",
+          "description": "Lists all clients",
+          "parameters": {
+            "optional": [{
+              "name": "devicetype",
+              "type": "string",
+              "description": "Filter by device type",
+              "values": ["server", "workstation", "mobile_device"]
+            }]
+          }
+        },
+        "listSites": {
+          "serviceName": "list_sites", 
+          "method": "GET",
+          "description": "Lists all sites for a client",
+          "parameters": {
+            "required": [{
+              "name": "clientid",
+              "type": "integer",
+              "description": "Client ID to list sites for"
+            }]
+          }
+        },
+        "listServers": {
+          "serviceName": "list_servers",
+          "method": "GET", 
+          "description": "Lists all server monitoring devices for site",
+          "parameters": {
+            "required": [{
+              "name": "siteid",
+              "type": "integer",
+              "description": "Site ID to list servers for"
+            }]
+          }
+        }
+      }
+    },
+    "assetTracking": {
+      "name": "Asset Tracking",
+      "endpoints": {
+        "listHardware": {
+          "serviceName": "list_all_hardware",
+          "method": "GET",
+          "description": "Lists hardware for given asset",
+          "parameters": {
+            "required": [{
+              "name": "assetid",
+              "type": "integer",
+              "description": "Asset ID to list hardware for"
+            }]
+          }
+        },
+        "listSoftware": {
+          "serviceName": "list_all_software",
+          "method": "GET",
+          "description": "Lists software broken down by type for given asset",
+          "parameters": {
+            "required": [{
+              "name": "assetid", 
+              "type": "integer",
+              "description": "Asset ID to list software for"
+            }]
+          }
+        }
+      }
+    }
+  }
+}

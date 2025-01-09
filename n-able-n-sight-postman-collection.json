@@ -1,0 +1,731 @@
+{
+  "info": {
+    "name": "N-able N-sight RMM API",
+    "description": "Complete collection for the N-able N-sight RMM Data Extraction API. Includes endpoints for Client/Site Management, Asset Tracking, Monitoring, Antivirus, Backup & Recovery, Patch Management, Task Management, and Active Directory.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "server",
+      "value": "{{server}}",
+      "type": "string",
+      "description": "Your N-able N-sight server URL (e.g., https://your-regional-systemmonitor-server.com)"
+    },
+    {
+      "key": "apikey",
+      "value": "{{apikey}}",
+      "type": "string",
+      "description": "Your N-able N-sight API key"
+    }
+  ],
+  "item": [
+    {
+      "name": "Client & Site Management",
+      "item": [
+        {
+          "name": "List Clients",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_clients",
+              "query": [
+                {
+                  "key": "devicetype",
+                  "value": "server",
+                  "description": "Optional: Filter by device type (server/workstation/mobile_device)",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Lists all clients. If devicetype is given, shows only clients with active devices of that type."
+          }
+        },
+        {
+          "name": "List Sites",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_sites&clientid={{clientid}}",
+              "query": [
+                {
+                  "key": "clientid",
+                  "value": "{{clientid}}",
+                  "description": "Required: Client ID to list sites for"
+                }
+              ]
+            },
+            "description": "Lists all sites for the specified client"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Asset Tracking",
+      "item": [
+        {
+          "name": "List Hardware",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_all_hardware&assetid={{assetid}}",
+              "query": [
+                {
+                  "key": "assetid",
+                  "value": "{{assetid}}",
+                  "description": "Required: Asset ID to list hardware for"
+                }
+              ]
+            },
+            "description": "Lists all hardware components for the specified asset"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Monitoring",
+      "item": [
+        {
+          "name": "List Device Monitoring Details",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_device_monitoring_details&deviceid={{deviceid}}",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID to get monitoring details for"
+                }
+              ]
+            },
+            "description": "Lists all monitoring information for the specified device"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Antivirus Management",
+      "item": [
+        {
+          "name": "List Managed Antivirus Scans",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_mav_scans&deviceid={{deviceid}}",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID to list scans for"
+                },
+                {
+                  "key": "details",
+                  "value": "true",
+                  "description": "Optional: Set to true for detailed scan information",
+                  "disabled": true
+                },
+                {
+                  "key": "engine_version",
+                  "value": "",
+                  "description": "Optional: Specific engine version to filter by",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Lists managed antivirus scans for the specified device"
+          }
+        },
+        {
+          "name": "List Managed Antivirus Threats",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_mav_threats&deviceid={{deviceid}}",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID to list threats for"
+                }
+              ]
+            },
+            "description": "Lists managed antivirus threats for the specified device"
+          }
+        },
+        {
+          "name": "List Quarantine Items",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_mav_quarantine&deviceid={{deviceid}}",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID to list quarantine for"
+                },
+                {
+                  "key": "items",
+                  "value": "ALL",
+                  "description": "Optional: Filter quarantine items (CURRENT/PREVIOUS/ALL)",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Lists quarantined items for the specified device"
+          }
+        },
+        {
+          "name": "Start Scan",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=start_mav_scan&deviceid={{deviceid}}",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID to start scan for"
+                }
+              ]
+            },
+            "description": "Starts an antivirus scan on the specified device"
+          }
+        },
+        {
+          "name": "Pause Scan",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=pause_mav_scan&deviceid={{deviceid}}",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID to pause scan for"
+                }
+              ]
+            },
+            "description": "Pauses an ongoing antivirus scan"
+          }
+        },
+        {
+          "name": "Resume Scan",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=resume_mav_scan&deviceid={{deviceid}}",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID to resume scan for"
+                }
+              ]
+            },
+            "description": "Resumes a paused antivirus scan"
+          }
+        },
+        {
+          "name": "Cancel Scan",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=cancel_mav_scan&deviceid={{deviceid}}",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID to cancel scan for"
+                }
+              ]
+            },
+            "description": "Cancels an ongoing antivirus scan"
+          }
+        },
+        {
+          "name": "Release from Quarantine",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=release_from_quarantine",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"guids\": [\"guid1\", \"guid2\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Releases specified items from quarantine"
+          }
+        },
+        {
+          "name": "Delete from Quarantine",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=delete_from_quarantine",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"guids\": [\"guid1\", \"guid2\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Permanently deletes specified items from quarantine"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Backup & Recovery",
+      "item": [
+        {
+          "name": "List Backup Sessions",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_backup_sessions&deviceid={{deviceid}}",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID to list backup sessions for"
+                },
+                {
+                  "key": "describe",
+                  "value": "true",
+                  "description": "Optional: Set to true for detailed session information",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Lists backup sessions for the specified device"
+          }
+        },
+        {
+          "name": "Get Backup Selection Size",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=get_backup_selection_size&deviceid={{deviceid}}&month={{month}}&year={{year}}",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID to get selection size for"
+                },
+                {
+                  "key": "month",
+                  "value": "{{month}}",
+                  "description": "Required: Month to get size for (1-12)"
+                },
+                {
+                  "key": "year",
+                  "value": "{{year}}",
+                  "description": "Required: Year to get size for (YYYY)"
+                },
+                {
+                  "key": "describe",
+                  "value": "true",
+                  "description": "Optional: Set to true for additional details",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Gets backup selection size for specified device and time period"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Patch Management",
+      "item": [
+        {
+          "name": "List Patches",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_patches&deviceid={{deviceid}}",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID to list patches for"
+                },
+                {
+                  "key": "describe",
+                  "value": "true",
+                  "description": "Optional: Set to true for detailed patch information",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Lists patches for the specified device"
+          }
+        },
+        {
+          "name": "Approve Patches",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=approve_patches",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patch_ids\": [\"KB5025221\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Approves specified patches for installation"
+          }
+        },
+        {
+          "name": "Ignore Patches",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=ignore_patches",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patch_ids\": [\"KB5025221\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Marks specified patches to be ignored"
+          }
+        },
+        {
+          "name": "Do Nothing Patches",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=do_nothing_patches",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patch_ids\": [\"KB5025221\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Sets specified patches to do nothing status"
+          }
+        },
+        {
+          "name": "Reprocess Patches",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=reprocess_patches",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID"
+                },
+                {
+                  "key": "describe",
+                  "value": "true",
+                  "description": "Optional: Set to true for detailed response",
+                  "disabled": true
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patch_ids\": [\"KB5025221\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Reprocesses specified patches"
+          }
+        },
+        {
+          "name": "Retry Failed Patches",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=retry_patches",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID"
+                },
+                {
+                  "key": "describe",
+                  "value": "true",
+                  "description": "Optional: Set to true for detailed response",
+                  "disabled": true
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patch_ids\": [\"KB5025221\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Retries installation of failed patches"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Task Management",
+      "item": [
+        {
+          "name": "List Tasks",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_tasks&deviceid={{deviceid}}",
+              "query": [
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID to list tasks for"
+                },
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "Optional: Filter by task status",
+                  "disabled": true
+                },
+                {
+                  "key": "type",
+                  "value": "",
+                  "description": "Optional: Filter by task type",
+                  "disabled": true
+                },
+                {
+                  "key": "describe",
+                  "value": "true",
+                  "description": "Optional: Set to true for detailed task information",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Lists tasks for the specified device"
+          }
+        },
+        {
+          "name": "Run Task Now",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=run_task_now",
+              "query": [
+                {
+                  "key": "checkid",
+                  "value": "{{checkid}}",
+                  "description": "Required: Task ID to run"
+                },
+                {
+                  "key": "describe",
+                  "value": "true",
+                  "description": "Optional: Set to true for detailed response",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Runs specified task immediately"
+          }
+        },
+        {
+          "name": "Get Task Result",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=get_task_result&checkid={{checkid}}",
+              "query": [
+                {
+                  "key": "checkid",
+                  "value": "{{checkid}}",
+                  "description": "Required: Task ID to get results for"
+                }
+              ]
+            },
+            "description": "Gets results for specified task"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Active Directory Management",
+      "item": [
+        {
+          "name": "List AD Users",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_ad_users&siteid={{siteid}}",
+              "query": [
+                {
+                  "key": "siteid",
+                  "value": "{{siteid}}",
+                  "description": "Required: Site ID to list users for"
+                },
+                {
+                  "key": "describe",
+                  "value": "true",
+                  "description": "Optional: Set to true for detailed user information",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Lists Active Directory users for the specified site"
+          }
+        },
+        {
+          "name": "Get AD User",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=get_ad_user&siteid={{siteid}}&objectGUID={{objectGUID}}",
+              "query": [
+                {
+                  "key": "siteid",
+                  "value": "{{siteid}}",
+                  "description": "Required: Site ID to get user from"
+                },
+                {
+                  "key": "objectGUID",
+                  "value": "{{objectGUID}}",
+                  "description": "Required: Object GUID of user"
+                },
+                {
+                  "key": "describe",
+                  "value": "true",
+                  "description": "Optional: Set to true for detailed user information",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Gets details for specified Active Directory user"
+          }
+        },
+        {
+          "name": "Search AD Users",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=search_ad_users&siteid={{siteid}}&query={{query}}",
+              "query": [
+                {
+                  "key": "siteid",
+                  "value": "{{siteid}}",
+                  "description": "Required: Site ID to search in"
+                },
+                {
+                  "key": "query",
+                  "value": "{{query}}",
+                  "description": "Required: Search query string"
+                },
+                {
+                  "key": "describe",
+                  "value": "true",
+                  "description": "Optional: Set to true for detailed results",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Searches for Active Directory users matching query"
+          }
+        },
+        {
+          "name": "Get User Change History",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/api/?apikey={{apikey}}&service=get_ad_user_history&objectGUID={{objectGUID}}",
+              "query": [
+                {
+                  "key": "objectGUID",
+                  "value": "{{objectGUID}}",
+                  "description": "Required: Object GUID of user"
+                }
+              ]
+            },
+            "description": "Gets change history for specified Active Directory user"
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Enforce rate limiting",
+          "let lastRequest = pm.variables.get('lastRequest');",
+          "let now = Date.now();",
+          "if (lastRequest && (now - lastRequest) < 90000) {",
+          "    let delay = 90000 - (now - lastRequest);",
+          "    setTimeout(function() {}, delay);",
+          "}",
+          "pm.variables.set('lastRequest', now);"
+        ]
+      }
+    }
+  ]
+}
