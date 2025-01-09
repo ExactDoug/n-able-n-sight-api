@@ -1,8 +1,28 @@
 {
   "info": {
     "name": "N-able N-sight RMM API",
-    "description": "Complete collection for the N-able N-sight RMM Data Extraction API. Includes endpoints for Client/Site Management, Asset Tracking, Monitoring, Antivirus, Backup & Recovery, Patch Management, Task Management, and Active Directory.",
+    "description": "Complete collection for the N-able N-sight RMM Data Extraction API. Includes endpoints for Client/Site Management, Asset Tracking, Monitoring, Antivirus, Backup & Recovery, Patch Management, Task Management, and Active Directory.\n\nAuthorization:\n- This API uses API Key authentication\n- Generate your API key from N-sight RMM: Settings > General Settings > API\n- The API key is associated with the Agent Key user permissions and assigned Client Groups\n- Set your API key in the collection variables or authorization settings",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "value",
+        "value": "{{apikey}}",
+        "type": "string"
+      },
+      {
+        "key": "key",
+        "value": "apikey",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "query",
+        "type": "string"
+      }
+    ]
   },
   "variable": [
     {
@@ -15,7 +35,7 @@
       "key": "apikey",
       "value": "{{apikey}}",
       "type": "string",
-      "description": "Your N-able N-sight API key"
+      "description": "Your N-able N-sight API key - Generate from Settings > General Settings > API"
     }
   ],
   "item": [
@@ -27,7 +47,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_clients",
+              "raw": "{{server}}/api/?service=list_clients",
               "query": [
                 {
                   "key": "devicetype",
@@ -45,7 +65,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_sites&clientid={{clientid}}",
+              "raw": "{{server}}/api/?service=list_sites&clientid={{clientid}}",
               "query": [
                 {
                   "key": "clientid",
@@ -67,7 +87,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_all_hardware&assetid={{assetid}}",
+              "raw": "{{server}}/api/?service=list_all_hardware&assetid={{assetid}}",
               "query": [
                 {
                   "key": "assetid",
@@ -89,7 +109,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_device_monitoring_details&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/?service=list_device_monitoring_details&deviceid={{deviceid}}",
               "query": [
                 {
                   "key": "deviceid",
@@ -111,7 +131,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_mav_scans&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/?service=list_mav_scans&deviceid={{deviceid}}",
               "query": [
                 {
                   "key": "deviceid",
@@ -140,7 +160,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_mav_threats&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/?service=list_mav_threats&deviceid={{deviceid}}",
               "query": [
                 {
                   "key": "deviceid",
@@ -157,7 +177,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_mav_quarantine&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/?service=list_mav_quarantine&deviceid={{deviceid}}",
               "query": [
                 {
                   "key": "deviceid",
@@ -180,7 +200,7 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=start_mav_scan&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/?service=start_mav_scan&deviceid={{deviceid}}",
               "query": [
                 {
                   "key": "deviceid",
@@ -197,7 +217,7 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=pause_mav_scan&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/?service=pause_mav_scan&deviceid={{deviceid}}",
               "query": [
                 {
                   "key": "deviceid",
@@ -214,7 +234,7 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=resume_mav_scan&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/?service=resume_mav_scan&deviceid={{deviceid}}",
               "query": [
                 {
                   "key": "deviceid",
@@ -231,7 +251,7 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=cancel_mav_scan&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/?service=cancel_mav_scan&deviceid={{deviceid}}",
               "query": [
                 {
                   "key": "deviceid",
@@ -248,7 +268,7 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=release_from_quarantine",
+              "raw": "{{server}}/api/?service=release_from_quarantine",
               "query": [
                 {
                   "key": "deviceid",
@@ -274,7 +294,7 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=delete_from_quarantine",
+              "raw": "{{server}}/api/?service=delete_from_quarantine",
               "query": [
                 {
                   "key": "deviceid",
@@ -305,7 +325,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_backup_sessions&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/?service=list_backup_sessions&deviceid={{deviceid}}",
               "query": [
                 {
                   "key": "deviceid",
@@ -328,7 +348,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=get_backup_selection_size&deviceid={{deviceid}}&month={{month}}&year={{year}}",
+              "raw": "{{server}}/api/?service=get_backup_selection_size&deviceid={{deviceid}}&month={{month}}&year={{year}}",
               "query": [
                 {
                   "key": "deviceid",
@@ -366,7 +386,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_patches&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/?service=list_patches&deviceid={{deviceid}}",
               "query": [
                 {
                   "key": "deviceid",
@@ -389,7 +409,7 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=approve_patches",
+              "raw": "{{server}}/api/?service=approve_patches",
               "query": [
                 {
                   "key": "deviceid",
@@ -415,7 +435,7 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=ignore_patches",
+              "raw": "{{server}}/api/?service=ignore_patches",
               "query": [
                 {
                   "key": "deviceid",
@@ -441,7 +461,7 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=do_nothing_patches",
+              "raw": "{{server}}/api/?service=do_nothing_patches",
               "query": [
                 {
                   "key": "deviceid",
@@ -467,7 +487,7 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=reprocess_patches",
+              "raw": "{{server}}/api/?service=reprocess_patches",
               "query": [
                 {
                   "key": "deviceid",
@@ -499,7 +519,7 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=retry_patches",
+              "raw": "{{server}}/api/?service=retry_patches",
               "query": [
                 {
                   "key": "deviceid",
@@ -536,7 +556,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_tasks&deviceid={{deviceid}}",
+              "raw": "{{server}}/api/?service=list_tasks&deviceid={{deviceid}}",
               "query": [
                 {
                   "key": "deviceid",
@@ -571,7 +591,7 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=run_task_now",
+              "raw": "{{server}}/api/?service=run_task_now",
               "query": [
                 {
                   "key": "checkid",
@@ -594,7 +614,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=get_task_result&checkid={{checkid}}",
+              "raw": "{{server}}/api/?service=get_task_result&checkid={{checkid}}",
               "query": [
                 {
                   "key": "checkid",
@@ -616,7 +636,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=list_ad_users&siteid={{siteid}}",
+              "raw": "{{server}}/api/?service=list_ad_users&siteid={{siteid}}",
               "query": [
                 {
                   "key": "siteid",
@@ -639,7 +659,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=get_ad_user&siteid={{siteid}}&objectGUID={{objectGUID}}",
+              "raw": "{{server}}/api/?service=get_ad_user&siteid={{siteid}}&objectGUID={{objectGUID}}",
               "query": [
                 {
                   "key": "siteid",
@@ -667,7 +687,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=search_ad_users&siteid={{siteid}}&query={{query}}",
+              "raw": "{{server}}/api/?service=search_ad_users&siteid={{siteid}}&query={{query}}",
               "query": [
                 {
                   "key": "siteid",
@@ -695,7 +715,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{server}}/api/?apikey={{apikey}}&service=get_ad_user_history&objectGUID={{objectGUID}}",
+              "raw": "{{server}}/api/?service=get_ad_user_history&objectGUID={{objectGUID}}",
               "query": [
                 {
                   "key": "objectGUID",
