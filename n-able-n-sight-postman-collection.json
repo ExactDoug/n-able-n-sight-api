@@ -1,15 +1,4 @@
 {
-  "event": [
-    {
-      "listen": "prerequest",
-      "script": {
-        "type": "text/javascript",
-        "exec": [
-          "pm.request.url.query.add({key: 'apikey', value: pm.variables.get('apikey')});"
-        ]
-      }
-    }
-  ],
   "info": {
     "name": "N-able N-sight RMM API",
     "description": "Complete collection for the N-able N-sight RMM Data Extraction API. Includes endpoints for Client/Site Management, Asset Tracking, Monitoring, Antivirus, Backup & Recovery, Patch Management, Task Management, and Active Directory.\n\nServer Configuration:\n- Set your N-able N-sight server hostname in the collection variables\n- Only provide the hostname (e.g., your-regional-systemmonitor-server.com)\n- Do not include protocol (https://) or trailing slash\n- To find your server hostname, log into N-sight RMM and copy just the hostname from the browser address bar\n\nAuthorization:\n- This API uses API Key authentication via URL parameter (apikey=)\n- Generate your API key from N-sight RMM: Settings > General Settings > API\n- The API key is associated with the Agent Key user permissions and assigned Client Groups\n- Set your API key in the collection variables - it will be included in all request URLs",
@@ -27,6 +16,30 @@
       "value": "{{apikey}}",
       "type": "string",
       "description": "Your N-able N-sight API key - Generate from Settings > General Settings > API"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Add apikey parameter",
+          "pm.request.addQueryParams({",
+          "    key: 'apikey',",
+          "    value: pm.variables.get('apikey')",
+          "});",
+          "",
+          "// Enforce rate limiting",
+          "let lastRequest = pm.variables.get('lastRequest');",
+          "let now = Date.now();",
+          "if (lastRequest && (now - lastRequest) < 90000) {",
+          "    let delay = 90000 - (now - lastRequest);",
+          "    setTimeout(function() {}, delay);",
+          "}",
+          "pm.variables.set('lastRequest', now);"
+        ]
+      }
     }
   ],
   "item": [
@@ -155,6 +168,45 @@
     {
       "name": "Asset Tracking",
       "item": [
+        {
+          "name": "List Device Asset Details",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{server}}/api/",
+              "protocol": "https",
+              "host": [
+                "{{server}}"
+              ],
+              "path": [
+                "api",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apikey}}"
+                },
+                {
+                  "key": "service",
+                  "value": "list_device_asset_details"
+                },
+                {
+                  "key": "deviceid",
+                  "value": "{{deviceid}}",
+                  "description": "Required: Device ID to get asset details for"
+                },
+                {
+                  "key": "describe",
+                  "value": "true",
+                  "description": "Optional: Returns a description of the service",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Lists detailed asset information for a specific device including:\n- Hardware components (network adapters, BIOS, sound devices, etc.)\n- Software inventory (installed applications, updates, hotfixes)\n- System information (OS, RAM, chassis type, etc.)\n- Custom fields\n- Device role and status"
+          }
+        },
         {
           "name": "List Hardware",
           "request": {
@@ -1050,45 +1102,6 @@
             "method": "GET",
             "url": {
               "raw": "{{server}}/api/",
-              "protocol": "https",
-              "host": [
-                "{{server}}"
-              ],
-              "path": [
-                "api",
-                ""
-              ],
-              "query": [
-                {
-                  "key": "apikey",
-                  "value": "{{apikey}}"
-                },
-                {
-                  "key": "service",
-                  "value": "get_task_result"
-                },
-                {
-                  "key": "checkid",
-                  "value": "{{checkid}}",
-                  "description": "Required: Task ID to get results for"
-                }
-              ]
-            },
-            "description": "Gets results for specified task"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Active Directory Management",
-      "item": [
-        {
-          "name": "List AD Users",
-          "request": {
-            "method": "GET",
-            "url": {
-              "raw": "{{server}}/api/",
-              "protocol": "https",
               "host": [
                 "{{server}}"
               ],
@@ -1122,30 +1135,6 @@
           }
         }
       ]
-    }
-  ],
-  "event": [
-    {
-      "listen": "prerequest",
-      "script": {
-        "type": "text/javascript",
-        "exec": [
-          "// Add apikey parameter",
-          "pm.request.addQueryParams({",
-          "    key: 'apikey',",
-          "    value: pm.variables.get('apikey')",
-          "});",
-          "",
-          "// Enforce rate limiting",
-          "let lastRequest = pm.variables.get('lastRequest');",
-          "let now = Date.now();",
-          "if (lastRequest && (now - lastRequest) < 90000) {",
-          "    let delay = 90000 - (now - lastRequest);",
-          "    setTimeout(function() {}, delay);",
-          "}",
-          "pm.variables.set('lastRequest', now);"
-        ]
-      }
     }
   ]
 }
