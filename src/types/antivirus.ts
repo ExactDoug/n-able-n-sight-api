@@ -1,80 +1,82 @@
-import { ApiResponse, DeviceId, BaseParams } from './common';
+/** MAV engine version */
+export type MavEngineVersion = 1 | 2;
 
-// Antivirus Types
-export type AntivirusEngine = 'VIPRE' | 'Bitdefender';
-export type ScanType = 'QUICK' | 'DEEP' | 'ACTIVE' | 'CUSTOM';
-export type ScanStatus = 'COMPLETED' | 'INTERRUPTED' | 'COMPLETED_WITH_ERRORS' | 'FAILED' | 'NOT_STARTED' | 'CANCELED';
-export type ThreatStatus = 'QUARANTINED' | 'DELETED' | 'CLEANED' | 'IGNORED';
+/** Supported AV product from list_supported_av_products */
+export interface AvProduct {
+  productid: number;
+  name: string;
+}
 
-// Scan Interfaces
-export interface ScanResult {
-  session_id: string;
-  type: ScanType;
-  status: ScanStatus;
-  start_time: string;
-  end_time?: string;
+/** AV definition from list_av_definitions */
+export interface AvDefinition {
+  version: string;
+  release_date: string;
+}
+
+/** AV history entry (daily status) from list_av_history */
+export interface AvHistoryDay {
+  date: string;
+  status: string;
+}
+
+/** MAV scan summary from list_mav_scans (details=NO) */
+export interface MavScanSummary {
+  scanid: number;
+  type: string;
+  status: string;
+  start: string;
+  end: string;
   threats_found: number;
   items_scanned: number;
-  errors: number;
+  [key: string]: unknown;
 }
 
-export interface Threat {
+/** MAV scan detail from list_mav_scans (details=YES) */
+export interface MavScanDetail extends MavScanSummary {
+  threats?: MavThreat[];
+  quarantine?: MavQuarantineItem[];
+  errors?: MavScanError[];
+}
+
+/** MAV threat from list_mav_threats */
+export interface MavThreat {
+  threatid: number;
   name: string;
+  path: string;
   category: string;
-  status: ThreatStatus;
-  detection_time: string;
-  file_path?: string;
+  action: string;
+  status: string;
+  scanid: number;
+  date: string;
+  [key: string]: unknown;
 }
 
-export interface QuarantineItem {
-  id: string;
-  threat_name: string;
-  quarantine_time: string;
-  status: ThreatStatus;
-  original_path?: string;
+/** MAV quarantine item from list_mav_quarantine / mav_quarantine_list */
+export interface MavQuarantineItem {
+  quarantineguid: string;
+  name: string;
+  path: string;
+  date: string;
+  category: string;
+  [key: string]: unknown;
 }
 
-// Response Interfaces
-export interface ScanResponse extends ApiResponse {
-  scan: ScanResult;
+/** MAV scan error */
+export interface MavScanError {
+  message: string;
+  [key: string]: unknown;
 }
 
-export interface ThreatResponse extends ApiResponse {
-  threats: Threat[];
+/** MAV scan device list item from mav_scan_device_list */
+export interface MavDeviceListItem {
+  [key: string]: unknown;
 }
 
-export interface QuarantineResponse extends ApiResponse {
-  items: QuarantineItem[];
-}
+/** Quarantine items filter */
+export type QuarantineItemsFilter = "CURRENT" | "PREVIOUS" | "ALL";
 
-// Parameter Interfaces
-export interface ScanParams extends BaseParams {
-  deviceid: DeviceId;
-  engine_version?: number;
-}
-
-export interface ListScansParams extends ScanParams {
-  details?: boolean;
-}
-
-export interface QuarantineParams extends ScanParams {
-  items?: 'CURRENT' | 'PREVIOUS' | 'ALL';
-}
-
-export interface QuarantineActionParams extends BaseParams {
-  deviceid: DeviceId;
-  guids: string | string[];
-}
-
-// Antivirus Endpoints Interface
-export interface AntivirusEndpoints {
-  listMAVScans(params: ListScansParams): Promise<ScanResponse>;
-  listMAVThreats(params: ScanParams): Promise<ThreatResponse>;
-  listMAVQuarantine(params: QuarantineParams): Promise<QuarantineResponse>;
-  startMAVScan(params: ScanParams): Promise<ApiResponse>;
-  pauseMAVScan(params: ScanParams): Promise<ApiResponse>;
-  resumeMAVScan(params: ScanParams): Promise<ApiResponse>;
-  cancelMAVScan(params: ScanParams): Promise<ApiResponse>;
-  releaseFromQuarantine(params: QuarantineActionParams): Promise<ApiResponse>;
-  deleteFromQuarantine(params: QuarantineActionParams): Promise<ApiResponse>;
+/** Scan action response (start/pause/resume/cancel) */
+export interface MavScanActionResponse {
+  message: string;
+  [key: string]: unknown;
 }

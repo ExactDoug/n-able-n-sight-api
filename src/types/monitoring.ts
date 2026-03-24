@@ -1,75 +1,43 @@
-import { ApiResponse, DeviceId, CheckId, BaseParams } from './common';
-
-// Check Status Types
-export type CheckStatus = 'PASS' | 'FAIL' | 'WARNING' | 'UNKNOWN';
-
-// Check Types
+/** Check information from list_checks */
 export interface Check {
-  checkid: CheckId;
+  checkid: number;
   name: string;
   type: string;
-  status: CheckStatus;
-  lastcheck?: string;
-  nextcheck?: string;
-  interval?: number;
+  status: string;
+  /** Check-specific fields vary by check type */
+  [key: string]: unknown;
 }
 
+/** Failing check from list_failing_checks */
+export interface FailingCheck {
+  checkid: number;
+  name: string;
+  type: string;
+  status: string;
+  deviceid: number;
+  devicename: string;
+  siteid: number;
+  sitename: string;
+  clientid: number;
+  clientname: string;
+  [key: string]: unknown;
+}
+
+/** Check result from list_fmt_check_result */
 export interface CheckResult {
-  timestamp: string;
-  status: CheckStatus;
-  message?: string;
-  data?: Record<string, any>;
+  checkid: number;
+  status: string;
+  log: string;
+  [key: string]: unknown;
 }
 
-export interface CheckHistory {
-  checkid: CheckId;
-  history: CheckResult[];
+/** Check history entry */
+export interface CheckHistoryEntry {
+  date: string;
+  status: string;
 }
 
-// Response Types
-export interface MonitoringDetailsResponse extends ApiResponse {
-  device: {
-    checks: Check[];
-    summary: {
-      total: number;
-      failing: number;
-      warning: number;
-    };
-  };
-}
-
-export interface CheckResultResponse extends ApiResponse {
-  check: {
-    id: CheckId;
-    results: CheckResult[];
-  };
-}
-
-export interface CheckHistoryResponse extends ApiResponse {
-  history: CheckHistory[];
-}
-
-// Parameter Types
-export interface DeviceMonitoringParams extends BaseParams {
-  deviceid: DeviceId;
-}
-
-export interface CheckResultsParams extends BaseParams {
-  deviceid: DeviceId;
-  checkid: CheckId;
-}
-
-export interface CheckHistoryParams extends BaseParams {
-  deviceid: DeviceId;
-  checkid: CheckId;
-  days?: number;
-}
-
-// Monitoring Endpoints Interface
-export interface MonitoringEndpoints {
-  getDeviceMonitoringDetails(params: DeviceMonitoringParams): Promise<MonitoringDetailsResponse>;
-  listFailingChecks(params: DeviceMonitoringParams): Promise<CheckResultResponse>;
-  listChecks(params: DeviceMonitoringParams): Promise<CheckResultResponse>;
-  getCheckResults(params: CheckResultsParams): Promise<CheckResultResponse>;
-  listCheckHistory(params: CheckHistoryParams): Promise<CheckHistoryResponse>;
+/** Device monitoring details from list_device_monitoring_details */
+export interface DeviceMonitoringDetails {
+  [key: string]: unknown;
 }

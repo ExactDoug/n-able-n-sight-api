@@ -1,123 +1,118 @@
-import { DeviceId, ApiResponse } from './common';
+/** Backup check history day status */
+export type BackupStatus =
+  | "NOTINSTALLED"
+  | "NOTRUN"
+  | "PASSINACTIVE"
+  | "PASS"
+  | "CLEAREDINACTIVE"
+  | "CLEARED"
+  | "FAILINACTIVE"
+  | "FAIL"
+  | "OVERDUE"
+  | "DEVICEOVERDUE";
 
-/**
- * Backup plugin types supported by the system
- */
-export enum BackupPlugin {
-    FILE_SYSTEM = 'FILE_SYSTEM',
-    SYSTEM_STATE = 'SYSTEM_STATE',
-    EXCHANGE = 'EXCHANGE',
-    NETWORK_SHARES = 'NETWORK_SHARES',
-    VMWARE = 'VMWARE',
-    MSSQL = 'MSSQL',
-    SHAREPOINT = 'SHAREPOINT',
-    ORACLE = 'ORACLE'
+/** Backup check history day */
+export interface BackupHistoryDay {
+  date: string;
+  status: BackupStatus;
 }
 
-/**
- * Type of backup operation
- */
-export enum BackupOperationType {
-    BACKUP = 'BACKUP',
-    RESTORE = 'RESTORE'
+/** Backup check history response */
+export interface BackupHistory {
+  checks: { name: string } | { name: string }[];
+  days: { day: BackupHistoryDay | BackupHistoryDay[] };
 }
 
-/**
- * Status of a backup session
- */
-export enum BackupSessionStatus {
-    COMPLETED = 'COMPLETED',
-    INTERRUPTED = 'INTERRUPTED',
-    COMPLETED_WITH_ERRORS = 'COMPLETED_WITH_ERRORS',
-    FAILED = 'FAILED',
-    NOT_STARTED = 'NOT_STARTED',
-    CANCELED = 'CANCELED'
+/** MOB session type */
+export type MobSessionType = "BACKUP" | "RESTORE";
+
+/** MOB session plugin type */
+export type MobPlugin =
+  | "FILE_SYSTEM"
+  | "SYSTEM_STATE"
+  | "EXCHANGE"
+  | "NETWORK_SHARES"
+  | "VMWARE"
+  | "MSSQL"
+  | "SHAREPOINT"
+  | "ORACLE";
+
+/** MOB session status */
+export type MobSessionStatus =
+  | "COMPLETED"
+  | "INTERRUPTED"
+  | "COMPLETED_WITH_ERRORS"
+  | "FAILED"
+  | "NOT_STARTED"
+  | "CANCELED";
+
+/** Backup & Recovery session from list_mob_sessions */
+export interface MobSession {
+  session_id: string;
+  type: MobSessionType;
+  storage_account_id: number;
+  plugin: MobPlugin;
+  start: string;
+  end: string;
+  selection_size: number;
+  selection_item_count: number;
+  size_change: number;
+  item_count_change: number;
+  removed_item_count: number;
+  processed_size: number;
+  processed_item_count: number;
+  transferred_size: number;
+  error_count: number;
+  status: MobSessionStatus;
 }
 
-/**
- * Represents a single backup or restore session
- */
-export interface BackupSession {
-    /** Unique identifier for the backup session */
-    session_id: string;
-    /** Type of operation (backup/restore) */
-    type: BackupOperationType;
-    /** ID of the storage account used */
-    storage_account_id: number;
-    /** Plugin used for the backup */
-    plugin: BackupPlugin;
-    /** Start time in UTC */
-    start: string;
-    /** End time in UTC */
-    end: string;
-    /** Total size in bytes of data included in backup */
-    selection_size: number;
-    /** Number of items included in backup */
-    selection_item_count: number;
-    /** Size difference in bytes from previous backup */
-    size_change: number;
-    /** Change in number of items from previous backup */
-    item_count_change: number;
-    /** Items removed from storage during backup */
-    removed_item_count: number;
-    /** Total bytes of data processed */
-    processed_size: number;
-    /** Total number of items processed */
-    processed_item_count: number;
-    /** Total bytes of data transferred */
-    transferred_size: number;
-    /** Number of errors encountered */
-    error_count: number;
-    /** Final status of the session */
-    status: BackupSessionStatus;
+/** Backup slot in selection size response */
+export interface BackupSlot {
+  slotid: number;
+  "@_active": string;
+  /** Plugin sizes are dynamic keys like FsBackupPlugin, SystemStateBackupPlugin, etc. */
+  [key: string]: unknown;
 }
 
-/**
- * Parameters for listing backup sessions
- */
-export interface ListBackupSessionsParams {
-    /** Device ID to list sessions for */
-    deviceid: DeviceId;
-    /** Optional describe parameter */
-    describe?: boolean;
+/** Device in selection size response */
+export interface SelectionSizeDevice {
+  deviceid: number;
+  name: string;
+  "@_active": string;
+  slot: BackupSlot | BackupSlot[];
+  total: number;
 }
 
-/**
- * Parameters for getting backup selection size
- */
-export interface BackupSelectionSizeParams {
-    /** Device ID to get selection size for */
-    deviceid: DeviceId;
-    /** Month to get size for (1-12) */
-    month: number;
-    /** Year to get size for (YYYY) */
-    year: number;
-    /** Optional describe parameter */
-    describe?: boolean;
+/** Site in selection size response */
+export interface SelectionSizeSite {
+  siteid: number;
+  name: string;
+  "@_active": string;
+  workstations: { workstation?: SelectionSizeDevice | SelectionSizeDevice[] };
+  servers: { server?: SelectionSizeDevice | SelectionSizeDevice[] };
+  total: number;
 }
 
-/**
- * Response for listing backup sessions
- */
-export interface ListBackupSessionsResponse extends ApiResponse {
-    /** Array of backup sessions */
-    sessions: BackupSession[];
+/** Client in selection size response */
+export interface SelectionSizeClient {
+  clientid: number;
+  name: string;
+  "@_active": string;
+  site: SelectionSizeSite | SelectionSizeSite[];
+  total: number;
 }
 
-/**
- * Response for backup selection size
- */
-export interface BackupSelectionSizeResponse extends ApiResponse {
-    /** Size in bytes */
-    size: number;
+/** Selection size response */
+export interface SelectionSizeResponse {
+  client: SelectionSizeClient | SelectionSizeClient[];
+  total: number;
 }
 
-/**
- * Backup & Recovery endpoint methods
- */
-export interface BackupEndpoints {
-    /** List backup sessions for a device */
-    listSessions(params: ListBackupSessionsParams): Promise<ListBackupSessionsResponse>;
-    /** Get backup selection size for a device */
-    getSelectionSize(params: BackupSelectionSizeParams): Promise<BackupSelectionSizeResponse>;
+/** Parameters for mob/mob_list_selection_size */
+export interface SelectionSizeParams {
+  clientid: number;
+  siteid: number;
+  deviceid: number;
+  year: number;
+  month: number;
 }
